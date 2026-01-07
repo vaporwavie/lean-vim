@@ -1,14 +1,58 @@
+A tribute to the era before bloat. Vim, reinterpreted. Fork of [The Golden Vim](https://github.com/neg4n/the-golden-vim).
 
+## Fork Changes
 
+This fork (lean-vim) adds:
 
-https://github.com/user-attachments/assets/835d7d6e-80fb-4d4e-ab8d-cbbadfa78f69
+- **Theme** - One Dark (Light and Dark)
+- **Nix flake** for reproducible setup across machines (`nix run github:vaporwavie/lean-vim`)
+- **Modular plugin structure** - each plugin in its own file under `lua/plugins/`
+- `scrolloff = 8` - keeps 8 lines visible above/below cursor
+- `gr` - fzf-lua LSP references picker
 
+**Additional plugins:**
 
-A tribute to the era before bloat. Vim, reinterpreted.
+| Plugin | Keybind | Description |
+|--------|---------|-------------|
+| [flash.nvim](https://github.com/folke/flash.nvim) | `s` / `S` | Jump to any location / treesitter node |
+| [undotree](https://github.com/mbbill/undotree) | `<leader>u` | Visualize undo history |
+| [vim-visual-multi](https://github.com/mg979/vim-visual-multi) | `gb` | Add cursor on word under cursor |
+| [no-neck-pain.nvim](https://github.com/shortcuts/no-neck-pain.nvim) | `<leader>z` | Center buffer (zen mode) |
 
-<img width="321" height="79" alt="Banner" align="right" src="https://github.com/user-attachments/assets/e011a56b-4d03-4a18-b73b-e572e8064956" />
+For reference, this fork also uses Ghostty as the terminal emulator. If you need a head start, feel free to use my config:
 
+```
+theme = light:Atom One Light,dark:Atom One Dark
+macos-titlebar-style = "tabs"
+font-family = "0xProto"
+font-size = 16
+adjust-cell-height = 35%
+cursor-style-blink = false
+shell-integration-features = no-cursor
+keybind = shift+enter=text:\x1b\r
+```
 
+If you are unsure on where to find your Ghostty config file, you can try aliasing to a common path:
+
+`alias gfc="vim /Users/$CURRENT_USER/Library/Application\ Support/com.mitchellh.ghostty/config"`
+
+### With Nix
+
+If you have [Nix](https://nixos.org/) installed, you can yoink this setup rather quickly:
+
+```bash
+# Run directly
+nix run github:vaporwavie/lean-vim
+
+# Or clone first, then run
+git clone https://github.com/vaporwavie/lean-vim ~/.config/nvim
+nix run ~/.config/nvim
+
+# For development (uses your system nvim with all CLI tools)
+cd ~/.config/nvim && nix develop
+```
+
+---
 
 ### Features
 
@@ -54,6 +98,8 @@ Clone the configuration into your NeoVim config directory
 
 > [!IMPORTANT]
 > **It is strongly encouraged to back up your previous configuration to avoid data loss. If `~/.config/nvim/` is empty directory - you're safe to clone. Otherwise - do a backup.**
+
+On first launch, plugins and LSP servers will auto-install (~2 min). Subsequent launches are instant.
 
 ### Other prerequisities before running 
 

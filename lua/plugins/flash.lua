@@ -1,0 +1,21 @@
+-- flash.nvim configuration for quick jumps
+local add, do_now = MiniDeps.add, MiniDeps.now
+
+add {
+  source = "folke/flash.nvim",
+  checkout = "main",
+}
+
+do_now(function()
+  local flash = require "flash"
+  flash.setup {
+    highlight = {
+      backdrop = false,
+    },
+    modes = {
+      char = { enabled = false }, -- disable f/F/t/T enhancement, keep it simple
+    },
+  }
+  vim.keymap.set({ "n", "x", "o" }, "s", flash.jump, { desc = "Flash jump" })
+  vim.keymap.set({ "n", "x", "o" }, "S", flash.treesitter, { desc = "Flash treesitter" })
+end)

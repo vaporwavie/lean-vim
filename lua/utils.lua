@@ -320,15 +320,12 @@ function U.fzf_lua_utils(fzf_instance)
     opts.actions = fzf_instance.defaults.actions.files
     opts.previewer = nil
 
-    if opts.cwd then
-      opts.cwd = opts.cwd
-    end
 
     opts.fzf_opts = vim.tbl_extend("force", opts.fzf_opts or {}, {
       ["--delimiter"] = ":",
       ["--nth"] = "4..", -- keep the match text as the shown part (optional)
       ["--preview-window"] = "right:60%:border-left:wrap:+{2}", -- jump preview to line {2}
-      ["--preview"] = [[bat --style=changes --theme=murphy --color=always --highlight-line {2} {1}]],
+      ["--preview"] = [[bat --style=changes --color=always --highlight-line {2} {1}]],
     })
 
     opts.fn_transform = nil
@@ -354,7 +351,7 @@ function U.fzf_lua_utils(fzf_instance)
     return fzf_instance.fzf_live(function(args)
       local q = args[1] or ""
       -- NOTE: flags → `--` → PATTERN → [PATH...]
-      return "rg --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -- "
+      return "rg --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git' -g '!node_modules' -g '!.next' -g '!dist' -g '!build' -g '!vendor' -- "
         .. vim.fn.shellescape(q)
         .. build_search_dirs_arg()
     end, opts)
@@ -407,13 +404,8 @@ function U.fzf_lua_utils(fzf_instance)
       ".",
     }, " ")
 
-    -- lstr preview: use ROOT because fd output is relative to ROOT
-    local lstr_opts = opts.lstr_opts or { "-a", "-g", "--icons", ("-L %d"):format(depth) }
-    local preview = ([[bash -lc '
-set -e
-PATH_TO="%s/%s"
-exec lstr %s -- "$PATH_TO"
-']]):format(root_abs, "{}", table.concat(lstr_opts, " "))
+    -- tree preview: use ROOT because fd output is relative to ROOT
+    local preview = ([[tree -L %d -C "%s/{}"]]):format(depth, root_abs)
 
     fzf_instance.fzf_exec(fd_cmd, {
       cwd = cwd, -- run the picker from cwd
