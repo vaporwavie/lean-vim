@@ -2,6 +2,10 @@ A tribute to the era before bloat. Vim, reinterpreted. Fork of [The Golden Vim](
 
 ## Fork Changes
 
+<img width="5106" height="2830" alt="image" src="https://github.com/user-attachments/assets/a5fa38cf-9668-432e-8905-391f3d9c76f3" />
+<img width="5106" height="2830" alt="image" src="https://github.com/user-attachments/assets/8e5c1565-371b-4a0e-9a39-ba3b4bc77ea0" />
+
+
 This fork (lean-vim) adds:
 
 - **Theme** - One Dark (Light and Dark)
