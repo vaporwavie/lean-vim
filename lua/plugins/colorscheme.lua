@@ -1,5 +1,6 @@
 -- Colorscheme configuration with auto dark/light mode
 local add, do_now = MiniDeps.add, MiniDeps.now
+local cursor_dark = require "themes.cursor_dark"
 
 -- dark mode detection plugin
 add { source = "f-person/auto-dark-mode.nvim" }
@@ -12,14 +13,24 @@ end
 
 add { source = "navarasu/onedark.nvim" }
 
+local function apply_theme(opts)
+  local onedark = require "onedark"
+
+  if vim.g.onedark_config and vim.g.onedark_config.loaded then
+    onedark.set_options("colors", {})
+    onedark.set_options("highlights", {})
+  end
+
+  onedark.setup(opts)
+  onedark.load()
+end
+
 local function load_dark()
-  require("onedark").setup { style = "dark" }
-  require("onedark").load()
+  apply_theme(cursor_dark)
 end
 
 local function load_light()
-  require("onedark").setup { style = "light" }
-  require("onedark").load()
+  apply_theme { style = "light" }
 end
 
 do_now(function()
