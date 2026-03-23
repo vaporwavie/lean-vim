@@ -26,10 +26,12 @@ local function apply_theme(opts)
 end
 
 local function load_dark()
+  vim.env.BAT_THEME = "OneHalfDark"
   apply_theme(cursor_dark)
 end
 
 local function load_light()
+  vim.env.BAT_THEME = "OneHalfLight"
   apply_theme { style = "light" }
 end
 
