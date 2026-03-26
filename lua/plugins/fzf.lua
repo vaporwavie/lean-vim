@@ -13,6 +13,7 @@ do_now(function()
     "max-perf",
     fzf_colors = true,
     fzf_opts = {
+      ["--ansi"] = "",
       ["--scrollbar"] = "██",
     },
     files = {
@@ -20,6 +21,7 @@ do_now(function()
     },
     grep = {
       rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git' -g '!node_modules' -g '!.next' -g '!dist' -g '!build' -g '!vendor'",
+      fzf_opts = { ["--ansi"] = "" },
     },
     previewers = {
       bat = {

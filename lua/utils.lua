@@ -322,6 +322,7 @@ function U.fzf_lua_utils(fzf_instance)
 
 
     opts.fzf_opts = vim.tbl_extend("force", opts.fzf_opts or {}, {
+      ["--ansi"] = "",
       ["--delimiter"] = ":",
       ["--nth"] = "4..", -- keep the match text as the shown part (optional)
       ["--preview-window"] = "right:60%:border-left:wrap:+{2}", -- jump preview to line {2}
