@@ -9,7 +9,7 @@ A tribute to the era before bloat. Vim, reinterpreted. Fork of [The Golden Vim](
 This fork (lean-vim) adds:
 
 - **Theme** - One Dark (Light and Dark)
-- **Nix flake** for reproducible setup across machines (`nix run github:vaporwavie/lean-vim`)
+- **Simple installation script** for quickly setting up this repository.
 - **Modular plugin structure** - each plugin in its own file under `lua/plugins/`
 - `scrolloff = 8` - keeps 8 lines visible above/below cursor
 - `gr` - fzf-lua LSP references picker
@@ -40,21 +40,30 @@ If you are unsure on where to find your Ghostty config file, you can try aliasin
 
 `alias gfc="vim /Users/$CURRENT_USER/Library/Application\ Support/com.mitchellh.ghostty/config"`
 
-### With Nix
+### Install
 
-If you have [Nix](https://nixos.org/) installed, you can yoink this setup rather quickly:
+To install this configuration into your Neovim config directory, run:
 
 ```bash
-# Run directly
-nix run github:vaporwavie/lean-vim
-
-# Or clone first, then run
-git clone https://github.com/vaporwavie/lean-vim ~/.config/nvim
-nix run ~/.config/nvim
-
-# For development (uses your system nvim with all CLI tools)
-cd ~/.config/nvim && nix develop
+./install.sh
 ```
+
+Or use the Make target:
+
+```bash
+make install
+```
+
+You can target a different path with:
+
+```bash
+./install.sh --path "$HOME/.config/nvim"
+# or
+make install INSTALL_PATH="$HOME/.config/nvim"
+```
+
+The script validates dependencies, backs up any existing config directory,
+and copies the current repository configuration into place.
 
 ---
 
@@ -87,17 +96,17 @@ If you're starting with Vim or you're getting back after the years, please insta
 
 Once you have [`bob`][bob] installed on your machine run `bob install 0.11` in a terminal of your choice.
 
-### Cloning The Golden Vim
+### Cloning lean-vim
 
 Clone the configuration into your NeoVim config directory
 
 - Via `git`
     ```bash
-    git clone https://github.com/neg4n/the-golden-vim ~/.config/nvim/ && cd ~/.config/nvim/
+    git clone https://github.com/vaporwavie/lean-vim ~/.config/nvim/ && cd ~/.config/nvim/
     ```
 - Via [GitHub CLI][gh] (`gh`)
     ```bash
-    gh repo clone neg4n/the-golden-vim ~/.config/nvim && cd ~/.config/nvim
+    gh repo clone vaporwavie/lean-vim ~/.config/nvim && cd ~/.config/nvim
     ```
 
 > [!IMPORTANT]
