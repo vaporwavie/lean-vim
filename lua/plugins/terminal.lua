@@ -1,7 +1,7 @@
 -- floating terminal toggle (no external plugin)
-local do_now = MiniDeps.now
+local do_later = MiniDeps.later
 
-do_now(function()
+do_later(function()
   local term_buf, term_win, term_chan
 
   local border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" }

@@ -1,12 +1,12 @@
 -- oil.nvim configuration for filesystem management
-local add, do_now = MiniDeps.add, MiniDeps.now
+local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "stevearc/oil.nvim",
   checkout = "master",
 }
 
-do_now(function()
+do_later(function()
   require("oil").setup {
     default_file_explorer = true,
     watch_for_changes = true,

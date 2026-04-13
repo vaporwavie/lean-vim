@@ -1,12 +1,12 @@
 -- fzf-lua configuration for fuzzy finding
-local add, do_now = MiniDeps.add, MiniDeps.now
+local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "ibhagwan/fzf-lua",
   checkout = "main",
 }
 
-do_now(function()
+do_later(function()
   local fzf = require "fzf-lua"
 
   fzf.setup {

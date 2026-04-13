@@ -43,7 +43,7 @@ do_now(function()
   end
 
   require("auto-dark-mode").setup {
-    update_interval = 1000,
+    update_interval = 3000,
     set_dark_mode = load_dark,
     set_light_mode = load_light,
   }

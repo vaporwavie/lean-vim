@@ -1,12 +1,12 @@
 -- flash.nvim configuration for quick jumps
-local add, do_now = MiniDeps.add, MiniDeps.now
+local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "folke/flash.nvim",
   checkout = "main",
 }
 
-do_now(function()
+do_later(function()
   local flash = require "flash"
   flash.setup {
     highlight = {
