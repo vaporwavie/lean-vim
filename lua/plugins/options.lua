@@ -25,6 +25,7 @@ vim.opt.scrolloff = 8
 vim.opt.linespace = 4
 vim.opt.ruler = false
 vim.opt.cmdheight = 0
+vim.opt.ttimeoutlen = 10
 
 -- Highlight yanked text briefly
 vim.api.nvim_create_autocmd("TextYankPost", {

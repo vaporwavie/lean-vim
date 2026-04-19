@@ -30,10 +30,10 @@ do_later(function()
       },
     },
     winopts = {
-      height = 0.55,
-      width = 1,
-      row = 1,
-      col = 0,
+      height = 0.85,
+      width = 0.85,
+      row = 0.5,
+      col = 0.5,
       backdrop = 50,
       border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" },
       preview = {
