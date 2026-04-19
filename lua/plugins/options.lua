@@ -1,5 +1,12 @@
 -- Core Neovim options and settings
 vim.g.mapleader = " "
+
+-- Disable unused built-in plugins to shave startup time
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_tutor = 1
+vim.g.loaded_tohtml = 1
 vim.opt.termguicolors = true
 vim.opt.ttyfast = true
 vim.opt.number = true

@@ -110,6 +110,13 @@ do_later(function()
   -- Examples: saiw" (surround word with "), sr"' (replace " with ')
   require("mini.surround").setup()
 
+  -- Better text objects: balanced pairs, multiline aware
+  -- Extends ci(, da[, etc. beyond the vanilla behavior
+  require("mini.ai").setup()
+
+  -- Git hunk signs in the gutter + stage/reset hunk UX
+  require("mini.diff").setup()
+
   -- Indentation scope: shows vertical line for current scope
   require("mini.indentscope").setup {
     symbol = "│",
