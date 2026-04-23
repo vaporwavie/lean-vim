@@ -118,8 +118,11 @@ do_later(function()
   require("mini.diff").setup()
 
   -- Indentation scope: shows vertical line for current scope
-  require("mini.indentscope").setup {
+  local indentscope = require "mini.indentscope"
+  indentscope.setup {
     symbol = "│",
     options = { try_as_border = true },
+    -- Kill the default 20-step draw animation for instant rendering on cursor move
+    draw = { animation = indentscope.gen_animation.none() },
   }
 end)

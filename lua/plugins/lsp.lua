@@ -1,5 +1,5 @@
 -- LSP configuration: blink.cmp + mason + lspconfig
-local add, do_now = MiniDeps.add, MiniDeps.now
+local add, do_now, do_later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 add {
   source = "saghen/blink.cmp",
@@ -12,7 +12,6 @@ add {
 }
 
 do_now(function()
-  require("mason").setup()
   require("blink.cmp").setup {
     sources = {
       default = { "lsp", "path" },
@@ -23,18 +22,6 @@ do_now(function()
   local builtin = vim.lsp.protocol.make_client_capabilities()
   local blink = require("blink.cmp").get_lsp_capabilities({}, false)
   local caps = vim.tbl_deep_extend("force", builtin, blink)
-
-  require("mason-lspconfig").setup {
-    ensure_installed = require("utils").mason_lspconfig(require "mason-lspconfig").server_to_lsp {
-      "lua_ls",
-      "vtsls",
-      "biome",
-      "stylua",
-      "prettier",
-      "tailwindcss-language-server",
-    },
-    automatic_enable = true,
-  }
 
   vim.lsp.config("*", { capabilities = caps })
 
@@ -47,4 +34,21 @@ do_now(function()
   end, { desc = "Show diagnostic at cursor" })
   -- grn = vim.lsp.buf.rename()
   -- gra = vim.lsp.buf.code_action()
+end)
+
+-- Defer mason + mason-lspconfig: the registry load is ~10-15ms of startup and
+-- isn't needed until a buffer is actually opened.
+do_later(function()
+  require("mason").setup()
+  require("mason-lspconfig").setup {
+    ensure_installed = require("utils").mason_lspconfig(require "mason-lspconfig").server_to_lsp {
+      "lua_ls",
+      "vtsls",
+      "biome",
+      "stylua",
+      "prettier",
+      "tailwindcss-language-server",
+    },
+    automatic_enable = true,
+  }
 end)
