@@ -7,7 +7,7 @@ do_now(function()
   require("no-neck-pain").setup {
     width = 120,
     autocmds = {
-      enableOnVimEnter = vim.o.columns > 160, -- only on wide screens
+      enableOnVimEnter = false, -- off by default; toggle with <leader>z
     },
   }
 
