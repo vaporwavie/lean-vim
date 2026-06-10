@@ -320,7 +320,6 @@ function U.fzf_lua_utils(fzf_instance)
     opts.actions = fzf_instance.defaults.actions.files
     opts.previewer = nil
 
-
     opts.fzf_opts = vim.tbl_extend("force", opts.fzf_opts or {}, {
       ["--ansi"] = "",
       ["--delimiter"] = ":",
@@ -444,92 +443,6 @@ function U.fzf_lua_utils(fzf_instance)
   end
 
   return FL
-end
-
--- NOTE: This solution is far from perfect and the conversion between the Mason names and LSP names
--- is lossy.
-function U.mason_lspconfig(mason_lspconfig_instance)
-  local ML = {}
-
-  ---Return lspconfig name(s) for given Mason package name(s).
-  ---If `packages` is a string -> returns a single string or nil.
-  ---If `packages` is a list/set -> returns a list of strings.
-  ---@param packages string|string[]|table<string, boolean>
-  ---@return string|string[]|nil
-  function ML.server_to_lsp(packages)
-    local maps = mason_lspconfig_instance.get_mappings().package_to_lspconfig
-
-    -- single package: return single RHS (or nil)
-    if type(packages) == "string" then
-      return maps[packages]
-    end
-
-    -- multi: return a list of RHS values
-    if vim.islist(packages) then
-      return fun
-        .iter(packages)
-        :map(function(pkg)
-          return maps[pkg]
-        end)
-        :filter(function(lsp)
-          return lsp ~= nil
-        end)
-        :totable()
-    end
-
-    return fun
-      .iter(pairs(packages))
-      :filter(function(pkg, enabled)
-        return enabled and type(pkg) == "string"
-      end)
-      :map(function(pkg)
-        return maps[pkg]
-      end)
-      :filter(function(lsp)
-        return lsp ~= nil
-      end)
-      :totable()
-  end
-
-  ---Inverse: return Mason package name(s) for given lspconfig server name(s).
-  ---If `servers` is a string -> returns a single string or nil.
-  ---If `servers` is a list/set -> returns a list of strings.
-  ---@param servers string|string[]|table<string, boolean>
-  ---@return string|string[]|nil
-  function ML.lsp_to_server(servers)
-    local maps = mason_lspconfig_instance.get_mappings().lspconfig_to_package
-
-    if type(servers) == "string" then
-      return maps[servers]
-    end
-
-    if vim.islist(servers) then
-      return fun
-        .iter(servers)
-        :map(function(lsp)
-          return maps[lsp]
-        end)
-        :filter(function(pkg)
-          return pkg ~= nil
-        end)
-        :totable()
-    end
-
-    return fun
-      .iter(pairs(servers))
-      :filter(function(lsp, enabled)
-        return enabled and type(lsp) == "string"
-      end)
-      :map(function(lsp)
-        return maps[lsp]
-      end)
-      :filter(function(pkg)
-        return pkg ~= nil
-      end)
-      :totable()
-  end
-
-  return ML
 end
 
 return U
