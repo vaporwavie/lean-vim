@@ -1,14 +1,14 @@
--- LSP configuration: blink.cmp + mason + lspconfig
-local add, do_now, do_later = MiniDeps.add, MiniDeps.now, MiniDeps.later
+-- LSP configuration: blink.cmp + native vim.lsp.enable
+-- Server binaries come from Homebrew (see install.sh), not mason:
+-- lua-language-server, vtsls, biome, tailwindcss-language-server
+local add, do_now = MiniDeps.add, MiniDeps.now
 
 add {
   source = "saghen/blink.cmp",
   depends = {
-    { source = "mason-org/mason.nvim", checkout = "v2.1.0" },
-    { source = "mason-org/mason-lspconfig.nvim", checkout = "v2.1.0" },
-    { source = "neovim/nvim-lspconfig", checkout = "v2.1.0" },
+    { source = "neovim/nvim-lspconfig" },
   },
-  checkout = "v1.7.0",
+  checkout = "v1.10.2",
 }
 
 do_now(function()
@@ -19,11 +19,23 @@ do_now(function()
     keymap = { preset = "enter", ["<CR>"] = { "select_and_accept", "fallback" } },
   }
 
-  local builtin = vim.lsp.protocol.make_client_capabilities()
-  local blink = require("blink.cmp").get_lsp_capabilities({}, false)
-  local caps = vim.tbl_deep_extend("force", builtin, blink)
+  vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
 
-  vim.lsp.config("*", { capabilities = caps })
+  vim.lsp.config("vtsls", {
+    settings = {
+      typescript = {
+        tsserver = { maxTsServerMemory = 8192 },
+      },
+      vtsls = {
+        experimental = {
+          -- Filter completions server-side: smaller payloads on big monorepos
+          completion = { enableServerSideFuzzyMatch = true },
+        },
+      },
+    },
+  })
+
+  vim.lsp.enable { "lua_ls", "vtsls", "biome", "tailwindcss" }
 
   vim.keymap.set("n", "gd", function()
     vim.lsp.buf.definition()
@@ -34,21 +46,4 @@ do_now(function()
   end, { desc = "Show diagnostic at cursor" })
   -- grn = vim.lsp.buf.rename()
   -- gra = vim.lsp.buf.code_action()
-end)
-
--- Defer mason + mason-lspconfig: the registry load is ~10-15ms of startup and
--- isn't needed until a buffer is actually opened.
-do_later(function()
-  require("mason").setup()
-  require("mason-lspconfig").setup {
-    ensure_installed = require("utils").mason_lspconfig(require "mason-lspconfig").server_to_lsp {
-      "lua_ls",
-      "vtsls",
-      "biome",
-      "stylua",
-      "prettier",
-      "tailwindcss-language-server",
-    },
-    automatic_enable = true,
-  }
 end)

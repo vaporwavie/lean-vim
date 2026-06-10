@@ -11,6 +11,9 @@ This fork (lean-vim) adds:
 - **Theme** - One Dark (Light and Dark)
 - **Simple installation script** for quickly setting up this repository.
 - **Modular plugin structure** - each plugin in its own file under `lua/plugins/`
+- **Mason-free LSP** - servers and formatters come from Homebrew, wired through native `vim.lsp.enable`
+- **External-edit autoread** - buffers reload automatically when files change on disk (agent and CLI edits)
+- **Monorepo-tuned vtsls** - `maxTsServerMemory = 8192` plus server-side completion filtering
 - `scrolloff = 8` - keeps 8 lines visible above/below cursor
 - `gr` - fzf-lua LSP references picker
 
@@ -71,7 +74,7 @@ and copies the current repository configuration into place.
 
 - Written entirely in [Lua][lua] - the language that stays out of your way.
 - Uncomplicated. No lazy-loading nonsense or dependency pyramids that break on edit. In modern "Vim frameworks", even the smallest change can trigger an avalanche.
-- Built on NeoVim v0.11 and the [`mini.nvim`](https://github.com/echasnovski/mini.nvim) ecosystem. Because oldschool doesn't mean outdated.
+- Built on NeoVim v0.12 and the [`mini.nvim`](https://github.com/echasnovski/mini.nvim) ecosystem. Because oldschool doesn't mean outdated.
 - Enhanced with [LuaFun][luafun] - for `.map()`, `.filter()`, and other table operations, familiar to anyone fluent in functional programming or JavaScript.
 - No dopamine-driven plugins. Only what matters for daily work.
 - Uses the classic `murphy` theme - already included in Vim and Neovim. Old colors, new context.
@@ -92,9 +95,9 @@ If you wish to use different LSP servers or formatters, search codebase for `con
 
 ### NeoVim
 
-If you're starting with Vim or you're getting back after the years, please install the `0.11` version through [`bob`][bob] _(a NeoVim version manager)_. This brilliant utility will save you a lot of time and struggle to get started.
+If you're starting with Vim or you're getting back after the years, please install the `0.12` version through [`bob`][bob] _(a NeoVim version manager)_. This brilliant utility will save you a lot of time and struggle to get started.
 
-Once you have [`bob`][bob] installed on your machine run `bob install 0.11` in a terminal of your choice.
+Once you have [`bob`][bob] installed on your machine run `bob install 0.12` in a terminal of your choice.
 
 ### Cloning lean-vim
 
@@ -112,7 +115,7 @@ Clone the configuration into your NeoVim config directory
 > [!IMPORTANT]
 > **It is strongly encouraged to back up your previous configuration to avoid data loss. If `~/.config/nvim/` is empty directory - you're safe to clone. Otherwise - do a backup.**
 
-On first launch, plugins and LSP servers will auto-install (~2 min). Subsequent launches are instant.
+On first launch, plugins will auto-install. LSP servers and formatters come from Homebrew (`lua-language-server`, `vtsls`, `biome`, `tailwindcss-language-server`, `stylua`, `prettier`) — `install.sh` validates they exist. Subsequent launches are instant.
 
 ### Other prerequisities before running 
 
@@ -121,7 +124,17 @@ On first launch, plugins and LSP servers will auto-install (~2 min). Subsequent 
 - [bat][bat] `0.26.0`
 - [fd][fd] `10.2.0`
 - [lstr][lstr] `lstr 0.2.1`
-- [lua][lua] `5.1 (LuaJIT 2.1.17x)` 
+- [lua][lua] `5.1 (LuaJIT 2.1.17x)`
+- [tree-sitter][tree-sitter] `0.26.x` (CLI; required by nvim-treesitter `main` to compile parsers)
+
+LSP servers and formatters are plain Homebrew binaries (no mason):
+
+- `lua-language-server` `3.18.x`
+- `vtsls` `0.3.x`
+- `biome` `2.4.x`
+- `tailwindcss-language-server` `0.14.x`
+- `stylua` `2.5.x`
+- `prettier` `3.8.x`
 
 > [!NOTE]
 > The version numbers near the packages do not mean that exactly one particular version is required. The Golden Vim was developed using the mentioned software with these versions and is guaranteed to work there properly. It is extremely likely it will work on other versions as well (depends on the semantic or any local versioning system).
@@ -261,6 +274,7 @@ The MIT License.
 [fd]: https://github.com/sharkdp/fd
 [lstr]: https://github.com/bgreenwell/lstr
 [lua]: https://lua.org/
+[tree-sitter]: https://github.com/tree-sitter/tree-sitter
 [gh]: https://cli.github.com/
 [luafun]: https://luafun.github.io/ 
 [oil]: https://github.com/stevearc/oil.nvim 

@@ -18,6 +18,14 @@ REQUIRED_TOOLS=(
   rg
   bat
   fd
+  tree-sitter
+  # LSP servers and formatters (e.g. via Homebrew); mason is not used
+  lua-language-server
+  vtsls
+  biome
+  tailwindcss-language-server
+  stylua
+  prettier
 )
 
 TARGET_DIR="$HOME/.config/nvim"
