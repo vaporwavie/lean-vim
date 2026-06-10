@@ -19,6 +19,8 @@ vim.opt.undofile = true
 vim.opt.smartindent = true
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.scrolloff = 8
@@ -26,6 +28,22 @@ vim.opt.linespace = 4
 vim.opt.ruler = false
 vim.opt.cmdheight = 0
 vim.opt.ttimeoutlen = 10
+
+-- Pick up edits made outside Neovim (agents, formatters, git) without :e
+-- 'autoread' is on by default; it only acts when a check runs, so force one
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
+  callback = function()
+    if vim.fn.getcmdwintype() == "" then
+      vim.cmd "checktime"
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileChangedShellPost", {
+  callback = function()
+    vim.notify("File changed on disk; buffer reloaded", vim.log.levels.WARN)
+  end,
+})
 
 -- Highlight yanked text briefly
 vim.api.nvim_create_autocmd("TextYankPost", {
