@@ -6,9 +6,12 @@ local add, do_now = MiniDeps.add, MiniDeps.now
 add {
   source = "saghen/blink.cmp",
   depends = {
-    { source = "neovim/nvim-lspconfig" },
+    {
+      source = "neovim/nvim-lspconfig",
+      checkout = "ed19590a3a9792901553c388d1aadafce012f80d",
+    },
   },
-  checkout = "v1.10.2",
+  checkout = "78336bc89ee5365633bcf754d93df01678b5c08f",
 }
 
 do_now(function()
@@ -20,6 +23,7 @@ do_now(function()
   }
 
   vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
+  vim.lsp.commands.setContext = function() end
 
   vim.lsp.config("vtsls", {
     settings = {

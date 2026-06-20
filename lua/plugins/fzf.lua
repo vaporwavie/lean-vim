@@ -3,7 +3,7 @@ local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "ibhagwan/fzf-lua",
-  checkout = "main",
+  checkout = "988416cc782dfe28bff3f0da9b8c943b236cd86a",
 }
 
 do_later(function()

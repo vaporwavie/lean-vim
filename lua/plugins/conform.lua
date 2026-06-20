@@ -1,31 +1,33 @@
 -- conform.nvim configuration for formatting
-local fun = require "fun"
 local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "stevearc/conform.nvim",
-  checkout = "master",
+  checkout = "619363c30309d29ffa631e67c8183f2a72caa373",
 }
 
 do_later(function()
   local conform = require "conform"
 
-  local formatters_by_ft = fun
-    .iter({ "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "jsonc" })
-    :map(function(ft)
-      return ft,
-        conform.get_formatter_info("biome").available and { "biome" } or {
-          "prettierd",
-          "prettier",
-          stop_after_first = true,
-        }
-    end)
-    :foldl(function(acc, k, v)
-      acc[k] = v
-      return acc
-    end, {})
+  local prettier_formatters = {
+    "prettierd",
+    "prettier",
+    stop_after_first = true,
+  }
 
-  formatters_by_ft.lua = { "stylua" }
+  local function js_formatters(bufnr)
+    if vim.fs.root(bufnr, { "biome.json", "biome.jsonc" }) and conform.get_formatter_info("biome", bufnr).available then
+      return { "biome" }
+    end
+    return prettier_formatters
+  end
+
+  local formatters_by_ft = {
+    lua = { "stylua" },
+  }
+  for _, ft in ipairs { "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "jsonc" } do
+    formatters_by_ft[ft] = js_formatters
+  end
 
   conform.setup {
     formatters_by_ft = formatters_by_ft,

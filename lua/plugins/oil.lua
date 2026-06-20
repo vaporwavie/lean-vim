@@ -3,7 +3,7 @@ local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "stevearc/oil.nvim",
-  checkout = "master",
+  checkout = "b73018b75affd13fa38e2fc94ef753b465f770d7",
 }
 
 do_later(function()

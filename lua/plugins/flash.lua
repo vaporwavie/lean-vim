@@ -3,7 +3,7 @@ local add, do_later = MiniDeps.add, MiniDeps.later
 
 add {
   source = "folke/flash.nvim",
-  checkout = "main",
+  checkout = "fcea7ff883235d9024dc41e638f164a450c14ca2",
 }
 
 do_later(function()

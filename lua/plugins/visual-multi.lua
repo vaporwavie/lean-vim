@@ -13,5 +13,5 @@ vim.g.VM_show_warnings = 0
 
 add {
   source = "mg979/vim-visual-multi",
-  checkout = "master",
+  checkout = "a6975e7c1ee157615bbc80fc25e4392f71c344d4",
 }

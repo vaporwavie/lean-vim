@@ -12,7 +12,10 @@ vim.opt.ttyfast = true
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.clipboard = "unnamedplus"
-vim.opt.swapfile = false
+local swap_dir = vim.fn.stdpath "state" .. "/swap//"
+vim.fn.mkdir(swap_dir, "p")
+vim.opt.directory = { swap_dir }
+vim.opt.swapfile = true
 vim.opt.backup = false
 vim.opt.undodir = os.getenv "HOME" .. "/.vim/undodir"
 vim.opt.undofile = true

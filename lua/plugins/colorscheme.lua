@@ -3,7 +3,10 @@ local add, do_now = MiniDeps.add, MiniDeps.now
 local cursor_dark = require "themes.cursor_dark"
 
 -- dark mode detection plugin
-add { source = "f-person/auto-dark-mode.nvim" }
+add {
+  source = "f-person/auto-dark-mode.nvim",
+  checkout = "e300259ec777a40b4b9e3c8e6ade203e78d15881",
+}
 
 -- little osa to detect which palette the OS is in (mac only for now)
 local function is_dark_mode()
@@ -11,7 +14,10 @@ local function is_dark_mode()
   return result:match "Dark" ~= nil
 end
 
-add { source = "navarasu/onedark.nvim" }
+add {
+  source = "navarasu/onedark.nvim",
+  checkout = "df4792accde9db0043121f32628bcf8e645d9aea",
+}
 
 local function apply_theme(opts)
   local onedark = require "onedark"

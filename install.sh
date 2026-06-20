@@ -62,6 +62,30 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}" && pwd)"
 
+canonical_path() {
+  local path="$1"
+
+  if command -v realpath >/dev/null 2>&1; then
+    realpath "$path" 2>/dev/null && return 0
+  fi
+
+  if [[ -d "$path" ]]; then
+    (cd "$path" && pwd -P)
+    return 0
+  fi
+
+  local dir
+  local base
+  dir="$(dirname "$path")"
+  base="$(basename "$path")"
+  if [[ -d "$dir" ]]; then
+    printf "%s/%s\n" "$(cd "$dir" && pwd -P)" "$base"
+    return 0
+  fi
+
+  return 1
+}
+
 backup_if_needed() {
   local dir="$1"
   if [[ ! -e "$dir" ]]; then
@@ -85,6 +109,13 @@ backup_if_needed() {
   echo "   Backing up to $backup_dir"
   mv "$dir" "$backup_dir"
 }
+
+TARGET_REAL="$(canonical_path "$TARGET_DIR" || true)"
+if [[ -n "$TARGET_REAL" && "$TARGET_REAL" == "$REPO_ROOT" ]]; then
+  echo "✅ lean-vim already lives at $TARGET_DIR"
+  echo "Nothing to install."
+  exit 0
+fi
 
 backup_if_needed "$TARGET_DIR"
 mkdir -p "$(dirname "$TARGET_DIR")"

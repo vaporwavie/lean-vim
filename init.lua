@@ -9,6 +9,7 @@ require "plugins.options"
 -- Clone 'mini.nvim' manually in a way that it gets managed by 'mini.deps'
 local path_package = vim.fn.stdpath "data" .. "/site/"
 local mini_path = path_package .. "pack/deps/start/mini.nvim"
+local mini_checkout = "ff8b3580935818ef2f21bdd651f057a2ae071eab"
 if not vim.loop.fs_stat(mini_path) then
   vim.cmd 'echo "Installing `mini.nvim`" | redraw'
   local clone_cmd = {
@@ -19,6 +20,7 @@ if not vim.loop.fs_stat(mini_path) then
     mini_path,
   }
   vim.fn.system(clone_cmd)
+  vim.fn.system { "git", "-C", mini_path, "checkout", "--detach", mini_checkout }
   vim.cmd "packadd mini.nvim | helptags ALL"
   vim.cmd 'echo "Installed `mini.nvim`" | redraw'
 end
