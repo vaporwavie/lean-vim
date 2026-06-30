@@ -52,9 +52,9 @@ do_now(function()
   }
 
   local items = {
-    { key = "f", label = "Find files", action = function() require("fzf-lua").files() end },
+    { key = "f", label = "Find files", action = function() require("fff").find_files() end },
     { key = "r", label = "Recent files", action = function() require("fzf-lua").oldfiles() end },
-    { key = "/", label = "Live grep", action = function() require("fzf-lua").live_grep() end },
+    { key = "/", label = "Live grep", action = function() require("fff").live_grep() end },
     { key = "e", label = "File explorer", action = function() vim.cmd "Oil --float" end },
     { key = "q", label = "Quit", action = function() vim.cmd "qall" end },
   }
@@ -81,7 +81,10 @@ do_now(function()
 
     for i, item in ipairs(items) do
       local r = ITEM_ROWS[i]
-      put(r, KEY_COL, item.key, "AlturaKey")
+      local dkey = "<" .. item.key .. ">"
+      for j = 1, #dkey do
+        put(r, KEY_COL + j - 1, dkey:sub(j, j), "AlturaKey")
+      end
       for j = 1, #item.label do
         put(r, LABEL_COL + j - 1, item.label:sub(j, j), "AlturaPillar")
       end

@@ -16,9 +16,6 @@ do_later(function()
       ["--ansi"] = "",
       ["--scrollbar"] = "██",
     },
-    files = {
-      fd_opts = "--color=never --type f --hidden --follow --exclude .git --exclude node_modules --exclude .next --exclude dist --exclude build --exclude vendor",
-    },
     grep = {
       rg_opts = "--column --line-number --no-heading --color=always --smart-case --max-columns=4096 -g '!.git' -g '!node_modules' -g '!.next' -g '!dist' -g '!build' -g '!vendor'",
       fzf_opts = { ["--ansi"] = "" },
@@ -91,9 +88,6 @@ do_later(function()
     }
   end, { desc = "Document diagnostics (fzf-lua) with copy" })
 
-  vim.keymap.set("n", "<leader>f", fzf.files, { desc = "Find files" })
-  vim.keymap.set("n", "<C-p>", fzf.files, { desc = "Find files" })
-  vim.keymap.set("n", "<C-f>", fzf.live_grep, { desc = "Search in project" })
   vim.keymap.set("n", "<leader>s", fzf.lsp_document_symbols, { desc = "Symbols" })
   vim.keymap.set("n", "gr", fzf.lsp_references, { desc = "References" })
   vim.keymap.set("n", "<leader>b", fzf.buffers, { desc = "Navigate through open buffers" })
@@ -139,7 +133,6 @@ do_later(function()
     navigate_buffer "next"
   end, { desc = "Next buffer" })
   vim.keymap.set("n", "<leader>q", "<cmd>Bdelete<CR>", { desc = "Delete current buffer" })
-  vim.keymap.set("n", "<leader>/", fzf_utils.live_ripgrep, { desc = "Live grep" })
   vim.keymap.set("n", "<leader>?", fzf_utils.pick_dirs_then_live_ripgrep, { desc = "Pick dirs then live ripgrep" })
 
   vim.keymap.set("n", "<leader>g", fzf.git_diff, { desc = "Git files" })
