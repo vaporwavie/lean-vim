@@ -216,6 +216,10 @@ do_now(function()
           end
         end
         local cur = vim.api.nvim_get_current_buf()
+        local win = vim.api.nvim_get_current_win()
+        if vim.api.nvim_win_get_config(win).relative ~= "" then
+          return
+        end
         if vim.api.nvim_buf_is_valid(cur) and vim.bo[cur].filetype ~= "altura" then
           open()
         end
