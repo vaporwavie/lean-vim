@@ -31,6 +31,7 @@ require("mini.deps").setup { path = { package = path_package } }
 -- Load all plugin configurations
 require "plugins.colorscheme"
 require "plugins.mini"
+require "plugins.dashboard"
 require "plugins.oil"
 require "plugins.treesitter"
 require "plugins.flash"
