@@ -70,6 +70,16 @@ if ((${#MISSING_TOOLS[@]} > 0)); then
   exit 1
 fi
 
+MIN_NVIM_VERSION="0.12.0"
+NVIM_VERSION="$(nvim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)"
+if [[ -n "$NVIM_VERSION" ]] && [[ "$(printf '%s\n' "$MIN_NVIM_VERSION" "$NVIM_VERSION" | sort -V | head -n1)" != "$MIN_NVIM_VERSION" ]]; then
+  echo "❌ Neovim $NVIM_VERSION is too old: $MIN_NVIM_VERSION+ is required (pinned nvim-treesitter uses 0.12 APIs)"
+  echo "Install it, e.g.:"
+  echo ""
+  echo "  brew install neovim    # or: bob install 0.12"
+  exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 REPO_ROOT="$SCRIPT_DIR"
 

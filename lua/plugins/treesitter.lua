@@ -1,4 +1,4 @@
--- nvim-treesitter (main branch) + textobjects for Neovim 0.11+
+-- nvim-treesitter (main branch) + textobjects for Neovim 0.12+
 local add, do_now = MiniDeps.add, MiniDeps.now
 
 add {
