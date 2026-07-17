@@ -51,16 +51,27 @@ while (($# > 0)); do
   esac
 done
 
+MISSING_TOOLS=()
 for tool in "${REQUIRED_TOOLS[@]}"; do
-  if ! command -v "$tool" >/dev/null 2>&1; then
-    echo "❌ Required tool missing: $tool"
-    exit 1
+  if command -v "$tool" >/dev/null 2>&1; then
+    echo "✅ $tool"
+  else
+    echo "❌ $tool"
+    MISSING_TOOLS+=("$tool")
   fi
-
 done
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}" && pwd)"
+if ((${#MISSING_TOOLS[@]} > 0)); then
+  echo ""
+  echo "Missing ${#MISSING_TOOLS[@]} required tool(s): ${MISSING_TOOLS[*]}"
+  echo "Install them first, e.g. with Homebrew:"
+  echo ""
+  echo "  brew install ${MISSING_TOOLS[*]}"
+  exit 1
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+REPO_ROOT="$SCRIPT_DIR"
 
 canonical_path() {
   local path="$1"
