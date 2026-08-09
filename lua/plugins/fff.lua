@@ -7,9 +7,9 @@ add {
 }
 
 do_later(function()
-  local lib = vim.fn.stdpath "data" .. "/site/pack/deps/opt/fff.nvim/target/release/libfff_nvim.dylib"
-  if vim.fn.filereadable(lib) == 0 then
-    require("fff.download").download_or_build_binary()
+  local download = require "fff.download"
+  if vim.fn.filereadable(download.get_binary_path()) == 0 then
+    download.download_or_build_binary()
   end
 
   require("fff").setup {}
