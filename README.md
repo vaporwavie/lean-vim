@@ -13,6 +13,7 @@ This fork (lean-vim) adds:
 - **Modular plugin structure** - each plugin in its own file under `lua/plugins/`
 - **Mason-free LSP** - servers and formatters come from Homebrew, wired through native `vim.lsp.enable`
 - **External-edit autoread** - buffers reload automatically when files change on disk (agent and CLI edits)
+- **`:agent {prompt}`** - ask DeepSeek V4.1 Flash (Fireworks) through pi about the current file or have it make changes, with a statusline spinner
 - **Monorepo-tuned vtsls** - `maxTsServerMemory = 8192` plus server-side completion filtering
 - `scrolloff = 8` - keeps 8 lines visible above/below cursor
 - `gr` - fzf-lua LSP references picker
@@ -166,7 +167,34 @@ The port of `murphy` theme for [bat][bat] (previews) can be found on the [`murph
 - Normal `<leader>vh` – fzf-lua help tags.
 - Oil buffer `q` / `<Esc>` – close the floating Oil window.
 
-#### More 
+#### Agent
+
+```vim
+:agent simplify this function
+:agent explain what this file does
+:AgentCancel
+```
+
+Requires `pi` on `PATH` with Fireworks credentials. The command saves the current
+named buffer, sends its path and contents to Fireworks' `deepseek-v4p1-flash` with
+low thinking, and runs in the Git root (or the file's directory). The model was picked
+for turn latency: about 4 s per small edit, against about 9 s for GPT-6 Luna on fast mode.
+pi applies requested edits with no sandbox, so it can touch files outside the workspace.
+While the model writes an edit to an open, unmodified buffer, the new text streams
+into that buffer live, highlighted with `AgentStream` (linked to `DiffAdd`). When the
+edit lands on disk, the buffer reloads, and one `u` restores the pre-agent text.
+Typing during the preview stops it and keeps your text, and cancelling restores the buffer.
+While it works, the statusline mode section becomes a spinner with the current step
+(`⠋ Working · writing file:line`). Runs that edit files finish silently; answers to
+questions appear as a toast. Both are kept in notification history (`<leader>n`). Unmodified buffers reload on completion.
+Unsaved edits made during a run are preserved, with a warning if the disk changed.
+One request runs at a time, with a ten-minute timeout and `:AgentCancel` to stop it.
+`:agent` expands to `:Agent` on the command line; use `:Agent` in scripts.
+
+Run `make check-agent` for repeatable editor/process checks, or
+`AGENT_LIVE=1 make check-agent` for two real pi requests against temporary files.
+
+#### More
 
 For the Git integration, type `:Git <any-command>` and explore by yourself. Refer to the [`mini.git`](https://github.com/nvim-mini/mini-git) docs eventually. The Golden Vim works best if you are used to manage Git via terminal _(it also respects your git aliases)_ and GitHub via [GitHub CLI](https://cli.github.com)
 

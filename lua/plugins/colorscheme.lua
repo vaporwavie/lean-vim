@@ -1,6 +1,7 @@
 -- Colorscheme configuration with auto dark/light mode
 local add, do_now = MiniDeps.add, MiniDeps.now
 local cursor_dark = require "themes.cursor_dark"
+local altura = require "themes.altura"
 
 -- dark mode detection plugin
 add {
@@ -41,7 +42,26 @@ local function load_light()
   apply_theme { style = "light" }
 end
 
+local function load_altura()
+  local palette = altura.read()
+  if not palette then
+    return
+  end
+  local light = palette.mode == "light"
+  vim.env.BAT_THEME = light and "OneHalfLight" or "OneHalfDark"
+  -- onedark reads 'background' but never sets it, and a stale "light" forces its light style.
+  vim.o.background = light and "light" or "dark"
+  apply_theme(altura.options(palette))
+end
+
 do_now(function()
+  -- Under Hyprland the theme script owns day and night, so follow its palette instead of the portal.
+  if altura.read() then
+    load_altura()
+    altura.watch(load_altura)
+    return
+  end
+
   if is_dark_mode() then
     load_dark()
   else
